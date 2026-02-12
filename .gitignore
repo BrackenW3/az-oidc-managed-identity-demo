@@ -1,0 +1,15 @@
+# Bicep
+*.bicep.json
+*.json
+
+# PowerShell
+*.ps1.json
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+
+# Dependencies
+node_modules/
