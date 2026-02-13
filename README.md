@@ -32,6 +32,15 @@ New-AzSubscriptionDeployment -Name "demo-mi-gh" -Location norwayeast `
     -TemplateFile ./bicep/main.bicep -ghUserName $ghUserName
 ```
 
+You can also customize the GitHub environment name (default: `Azure`) and the role assigned to the managed identity (default: `Contributor`) by passing additional parameters:
+
+```powershell
+New-AzSubscriptionDeployment -Name "demo-mi-gh" -Location norwayeast `
+    -TemplateFile ./bicep/main.bicep -ghUserName $ghUserName `
+    -ghEnvironmentName "Production" `
+    -roleDefinitionId "acdd72a7-3385-48ef-bd42-f606fba81ae7" # Reader role
+```
+
 This will deploy the [main.bicep](./bicep/main.bicep) that contains a resource group with a managed identity with a federated credential and a role assignment. Make note of the output values for subscription id, client id and tenant id.
 
 3. Add these values as secrets to your GitHub repository with the secret names `SUBSCRIPTION_ID`, `CLIENT_ID`, `TENANT_ID`.
