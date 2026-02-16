@@ -10,7 +10,7 @@ jobs:
     environment: Azure
     steps:
       - name: "Azure PowerShell login"
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
@@ -18,8 +18,8 @@ jobs:
           enable-AzPSSession: true
 
       - name: "Get resource groups"
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
+        shell: pwsh
+        run: |
+            # Optimization: Using run: pwsh avoids the overhead of checking/installing the Az module version
+            $ErrorActionPreference = 'Stop'
             Get-AzResourceGroup
-          azPSVersion: "latest"
