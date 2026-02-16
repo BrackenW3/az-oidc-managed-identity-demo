@@ -13,15 +13,15 @@ param ghRepoName string
 @description('The name of the GitHub environment')
 param ghEnvironmentName string = 'Azure'
 
-@description('The role definition ID to assign to the managed identity. Defaults to Contributor.')
-param roleDefinitionId string = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+@description('The role definition ID to assign to the managed identity. Defaults to Reader.')
+param roleDefinitionId string = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
 
 resource mi 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: name
   location: location
 }
 
-@description('The role definition to assign. Defaults to Contributor.')
+@description('The role definition to assign. Defaults to Reader.')
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   scope: subscription()
   name: roleDefinitionId

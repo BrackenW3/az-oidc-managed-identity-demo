@@ -15,8 +15,8 @@ param ghRepoName string = 'az-oidc-managed-identity-demo'
 @description('The name of the GitHub environment')
 param ghEnvironmentName string = 'Azure'
 
-@description('The role definition ID to assign to the managed identity. Defaults to Contributor.')
-param roleDefinitionId string = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+@description('The role definition ID to assign to the managed identity. Defaults to Reader.')
+param roleDefinitionId string = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
 
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: '${baseName}-rg'
