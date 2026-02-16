@@ -1,5 +1,12 @@
 name: Run Azure Login
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'GitHub Environment to use'
+        required: true
+        default: 'Azure'
+        type: string
 
 permissions:
   id-token: write
@@ -7,7 +14,7 @@ permissions:
 jobs:
   demo:
     runs-on: ubuntu-latest
-    environment: Azure
+    environment: ${{ inputs.environment }}
     steps:
       - name: "Azure PowerShell login"
         uses: azure/login@v1
