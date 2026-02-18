@@ -51,6 +51,27 @@ This will demonstrate that the workflow is able to login with the managed identi
 
 ![workflow](./.github/workflow.png)
 
+## Dashboard & Cloudflare Deployment
+
+This project now includes a professional dashboard to visualize the fetched Azure resources.
+
+### Features
+- **Modern UI**: Glassmorphism design with dark mode.
+- **Visualizations**: Displays resource counts, location distribution, and status.
+- **Search**: Filter resources by name or location.
+- **Auto-Deployment**: Automatically deploys to Cloudflare Pages after data fetch.
+
+### Setup for Cloudflare Deployment
+
+1.  Create a Cloudflare account and get your **API Token** and **Account ID**.
+2.  Add the following secrets to your GitHub repository:
+    - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API Token (with permissions for Pages).
+    - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID.
+
+### How it works
+1.  **Run Azure Login**: This workflow fetches the latest resource group data and saves it as an artifact.
+2.  **Deploy Dashboard**: Once the login workflow completes successfully, the deployment workflow triggers automatically. It downloads the data artifact and deploys the dashboard to Cloudflare Pages.
+
 ## Summary
 
 1. You have deployed a managed identity and federated credentials declaratively using Bicep - without any Azure AD or Graph-related tasks.

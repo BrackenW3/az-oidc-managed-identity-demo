@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Resource Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-mesh"></div>
+    <div class="glass-container">
+        <header>
+            <div class="header-content">
+                <i class="fa-brands fa-microsoft"></i>
+                <h1>Azure Resource Monitor</h1>
+            </div>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span id="last-updated">Updating...</span>
+            </div>
+        </header>
+
+        <main>
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <div class="stat-info">
+                        <h3>Resource Groups</h3>
+                        <span id="rg-count" class="stat-value">--</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="stat-info">
+                        <h3>Locations</h3>
+                        <span id="location-count" class="stat-value">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="resource-list">
+                <div class="list-header">
+                    <h2>Resources</h2>
+                    <div class="search-bar">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search resources...">
+                    </div>
+                </div>
+                <div id="resource-grid" class="grid-container">
+                    <!-- Resource cards will be injected here -->
+                    <div class="loading-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <p>Loading data...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Powered by Azure & GitHub Actions</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
