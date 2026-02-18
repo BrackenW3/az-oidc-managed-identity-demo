@@ -45,7 +45,7 @@ This will deploy the [main.bicep](./bicep/main.bicep) that contains a resource g
 
 3. Add these values as secrets to your GitHub repository with the secret names `SUBSCRIPTION_ID`, `CLIENT_ID`, `TENANT_ID`.
 
-4. Trigger the GitHub Actions workflow by navigating to **Actions** and choosing the "Run Azure Login" workflow. View the details of the 'demo' job in the workflow and inspect the steps.
+4. Trigger the GitHub Actions workflow by navigating to **Actions** and choosing the "Run Azure Login" workflow. You can optionally specify the **GitHub Environment** name (default: `Azure`) to match your deployment. View the details of the 'demo' job in the workflow and inspect the steps.
 
 This will demonstrate that the workflow is able to login with the managed identity using federated credentials and it will list the resource groups it has access to! ✅
 
