@@ -70,6 +70,16 @@ function renderResources(resources) {
     const grid = document.getElementById('resource-grid');
     grid.innerHTML = '';
 
+    if (resources.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <i class="fa-solid fa-search empty-state__icon" aria-hidden="true"></i>
+                <p>No resources found matching your search.</p>
+            </div>
+        `;
+        return;
+    }
+
     resources.forEach(rg => {
         const card = document.createElement('div');
         card.className = 'resource-card';
