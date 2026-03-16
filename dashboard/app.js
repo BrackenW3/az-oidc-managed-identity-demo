@@ -72,8 +72,8 @@ function renderResources(resources) {
 
     if (resources.length === 0) {
         grid.innerHTML = `
-            <div class="loading-state">
-                <i class="fa-solid fa-search" style="font-size: 2rem; opacity: 0.5; margin-bottom: 0.5rem;" aria-hidden="true"></i>
+            <div class="empty-state">
+                <i class="fa-solid fa-search empty-state__icon" aria-hidden="true"></i>
                 <p>No resources found matching your search.</p>
             </div>
         `;
