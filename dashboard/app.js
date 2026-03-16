@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchData();
 
-    // Search functionality
+    // Search functionality with debounce to improve performance
     const searchInput = document.getElementById('search-input');
+    let debounceTimer;
     searchInput.addEventListener('input', (e) => {
-        filterResources(e.target.value);
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            filterResources(e.target.value);
+        }, 300);
     });
 });
 
@@ -70,6 +74,11 @@ function renderResources(resources) {
     const grid = document.getElementById('resource-grid');
     grid.innerHTML = '';
 
+    // Performance Optimization: Use a DocumentFragment to batch DOM insertions
+    // This reduces the number of reflows/repaints, making the UI much snappier
+    // especially with a large number of resources.
+    const fragment = document.createDocumentFragment();
+
     resources.forEach(rg => {
         const card = document.createElement('div');
         card.className = 'resource-card';
@@ -100,8 +109,11 @@ function renderResources(resources) {
                 </div>
             </div>
         `;
-        grid.appendChild(card);
+        fragment.appendChild(card);
     });
+
+    // Append all cards at once
+    grid.appendChild(fragment);
 }
 
 function updateStats(resources) {
