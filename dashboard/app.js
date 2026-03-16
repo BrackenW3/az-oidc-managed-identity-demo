@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let resourcesData = [];
 
+// 🛡️ Sentinel: XSS Prevention
+// Sanitize user input before rendering into HTML to prevent XSS attacks
+function escapeHtml(unsafe) {
+    if (!unsafe && unsafe !== 0) return '';
+    return String(unsafe)
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
 async function fetchData() {
     const grid = document.getElementById('resource-grid');
     const lastUpdated = document.getElementById('last-updated');
@@ -91,22 +103,23 @@ function renderResources(resources) {
         const id = rg.ResourceId || rg.Id || '';
         const subscriptionId = id.split('/')[2] || '...';
 
+        // 🛡️ Sentinel: XSS Prevention - Apply HTML escaping to all dynamic content
         card.innerHTML = `
             <div class="card-header">
                 <div class="card-icon">
                     <i class="fa-solid fa-cube"></i>
                 </div>
-                <span class="tag">${state}</span>
+                <span class="tag">${escapeHtml(state)}</span>
             </div>
-            <div class="card-title" title="${name}">${name}</div>
+            <div class="card-title" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
             <div class="card-details">
                 <div class="detail-row">
                     <span class="detail-label">Location</span>
-                    <span class="detail-value">${location}</span>
+                    <span class="detail-value">${escapeHtml(location)}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Sub ID</span>
-                    <span class="detail-value" title="${subscriptionId}">${subscriptionId.substring(0, 8)}...</span>
+                    <span class="detail-value" title="${escapeHtml(subscriptionId)}">${escapeHtml(subscriptionId.substring(0, 8))}...</span>
                 </div>
             </div>
         `;
