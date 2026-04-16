@@ -43,7 +43,15 @@ async function fetchData() {
         const data = await response.json();
 
         // Handle if data is wrapped or direct array
-        resourcesData = Array.isArray(data) ? data : (data ? [data] : []);
+        const rawData = Array.isArray(data) ? data : (data ? [data] : []);
+
+        // Performance Optimization: Pre-compute lowercase strings for faster search filtering
+        // This avoids calling .toLowerCase() on every item during every keystroke
+        resourcesData = rawData.map(r => ({
+            ...r,
+            _searchName: (r.ResourceGroupName || r.Name || '').toLowerCase(),
+            _searchLocation: (r.Location || '').toLowerCase()
+        }));
 
         if (resourcesData.length === 0) {
             grid.innerHTML = '<div class="loading-state"><p>No resources found.</p></div>';
@@ -142,9 +150,7 @@ function updateStats(resources) {
 function filterResources(query) {
     const lowerQuery = query.toLowerCase();
     const filtered = resourcesData.filter(r => {
-        const name = (r.ResourceGroupName || r.Name || '').toLowerCase();
-        const location = (r.Location || '').toLowerCase();
-        return name.includes(lowerQuery) || location.includes(lowerQuery);
+        return r._searchName.includes(lowerQuery) || r._searchLocation.includes(lowerQuery);
     });
     renderResources(filtered);
 }
@@ -157,8 +163,15 @@ function useMockData() {
         { ResourceGroupName: 'rg-monitoring', Location: 'northeurope', ProvisioningState: 'Succeeded', ResourceId: '/subs/123/rg/rg-monitoring' },
         { ResourceGroupName: 'rg-backup-vault', Location: 'westus', ProvisioningState: 'Succeeded', ResourceId: '/subs/123/rg/rg-backup-vault' }
     ];
-    resourcesData = mockData;
-    renderResources(mockData);
+
+    // Performance Optimization: Pre-compute lowercase strings for faster search filtering
+    resourcesData = mockData.map(r => ({
+        ...r,
+        _searchName: (r.ResourceGroupName || r.Name || '').toLowerCase(),
+        _searchLocation: (r.Location || '').toLowerCase()
+    }));
+
+    renderResources(resourcesData);
     updateStats(mockData);
     document.getElementById('last-updated').textContent = 'Mock Mode';
 }
