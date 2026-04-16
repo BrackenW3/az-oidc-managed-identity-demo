@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
             filterResources(e.target.value);
         }, 300);
     });
+
+    // Keyboard shortcut to focus search
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== searchInput) {
+            e.preventDefault();
+            searchInput.focus();
+        }
+    });
 });
 
 let resourcesData = [];
@@ -85,6 +93,16 @@ async function fetchData() {
 function renderResources(resources) {
     const grid = document.getElementById('resource-grid');
     grid.innerHTML = '';
+
+    if (resources.length === 0) {
+        grid.innerHTML = `
+            <div class="loading-state" role="status">
+                <i class="fa-solid fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <p>No resources found matching your search.</p>
+            </div>
+        `;
+        return;
+    }
 
     // Performance Optimization: Use a DocumentFragment to batch DOM insertions
     // This reduces the number of reflows/repaints, making the UI much snappier
