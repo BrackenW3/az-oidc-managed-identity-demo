@@ -46,7 +46,12 @@ async function fetchData() {
         resourcesData = Array.isArray(data) ? data : (data ? [data] : []);
 
         if (resourcesData.length === 0) {
-            grid.innerHTML = '<div class="loading-state"><p>No resources found.</p></div>';
+            grid.innerHTML = `
+                <div class="loading-state" role="status">
+                    <i class="fa-solid fa-folder-open" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-secondary);"></i>
+                    <p>No resources found.</p>
+                </div>
+            `;
             return;
         }
 
@@ -85,6 +90,16 @@ async function fetchData() {
 function renderResources(resources) {
     const grid = document.getElementById('resource-grid');
     grid.innerHTML = '';
+
+    if (resources.length === 0) {
+        grid.innerHTML = `
+            <div class="loading-state" role="status">
+                <i class="fa-solid fa-search" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-secondary);"></i>
+                <p>No matching resources found.</p>
+            </div>
+        `;
+        return;
+    }
 
     // Performance Optimization: Use a DocumentFragment to batch DOM insertions
     // This reduces the number of reflows/repaints, making the UI much snappier
