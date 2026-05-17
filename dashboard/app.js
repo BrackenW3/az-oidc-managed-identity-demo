@@ -50,6 +50,15 @@ async function fetchData() {
             return;
         }
 
+        // ⚡ Bolt: Pre-compute search keys to optimize filtering performance.
+        // Doing this once on load prevents O(N) string allocations and toLowerCase()
+        // calls on every keystroke, keeping the main thread free and search snappy.
+        resourcesData.forEach(r => {
+            const name = (r.ResourceGroupName || r.Name || '').toLowerCase();
+            const location = (r.Location || '').toLowerCase();
+            r._searchKey = `${name} ${location}`;
+        });
+
         renderResources(resourcesData);
         updateStats(resourcesData);
 
@@ -141,11 +150,7 @@ function updateStats(resources) {
 
 function filterResources(query) {
     const lowerQuery = query.toLowerCase();
-    const filtered = resourcesData.filter(r => {
-        const name = (r.ResourceGroupName || r.Name || '').toLowerCase();
-        const location = (r.Location || '').toLowerCase();
-        return name.includes(lowerQuery) || location.includes(lowerQuery);
-    });
+    const filtered = resourcesData.filter(r => r._searchKey.includes(lowerQuery));
     renderResources(filtered);
 }
 
@@ -157,6 +162,14 @@ function useMockData() {
         { ResourceGroupName: 'rg-monitoring', Location: 'northeurope', ProvisioningState: 'Succeeded', ResourceId: '/subs/123/rg/rg-monitoring' },
         { ResourceGroupName: 'rg-backup-vault', Location: 'westus', ProvisioningState: 'Succeeded', ResourceId: '/subs/123/rg/rg-backup-vault' }
     ];
+
+    // ⚡ Bolt: Pre-compute search keys for mock data
+    mockData.forEach(r => {
+        const name = (r.ResourceGroupName || r.Name || '').toLowerCase();
+        const location = (r.Location || '').toLowerCase();
+        r._searchKey = `${name} ${location}`;
+    });
+
     resourcesData = mockData;
     renderResources(mockData);
     updateStats(mockData);
